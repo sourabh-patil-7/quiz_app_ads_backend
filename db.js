@@ -11,7 +11,7 @@ let connection = mysql.createConnection({
 
 connection.connect(function (err) {
   if (err) {
-    console.error("Error connecting: " + err.message);
+    console.error("Error connecting: " , err);
     connection = null;
     return;
   }

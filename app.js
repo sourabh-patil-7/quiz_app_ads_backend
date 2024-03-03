@@ -14,7 +14,7 @@ app.use(express.json());
 
 const corsOptions = {
 	"Access-Control-Allow-Origin": "*",
-	origin: ["http://localhost:3000"],
+	origin: ["https://quizzfy.vercel.app/"],
 	credentials: true, //access-control-allow-credentials:true
 	optionSuccessStatus: 200,
 };
