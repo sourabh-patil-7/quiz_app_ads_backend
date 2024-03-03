@@ -42,7 +42,7 @@ router.get("/:quiz_id", async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
         return;
       }
-      console.log("result : ",result);
+      console.log("result : ", result);
       // Check if any results were found
       if (result.length > 0) {
         // Return the results
@@ -62,7 +62,3 @@ router.get("/:quiz_id", async (req, res) => {
 });
 
 module.exports = router;
-
-
-
-
