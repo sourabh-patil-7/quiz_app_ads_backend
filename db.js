@@ -2,7 +2,7 @@ const { process_params } = require("express/lib/router");
 const mysql = require("mysql");
 require("dotenv").config();
 
-const connection = mysql.createConnection({
+let connection = mysql.createConnection({
   host: process.env.host,
   user: process.env.USER,
   password: process.env.PASSWORD,
