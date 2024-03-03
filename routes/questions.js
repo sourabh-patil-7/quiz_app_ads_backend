@@ -5,8 +5,7 @@ const databaseName = "QUESTIONS";
 
 router.get("/quizId/:id", (req, res) => {
   try {
-    const query =
-      "SELECT * FROM " + databaseName + " WHERE quiz_id=?";
+    const query = "SELECT * FROM " + databaseName + " WHERE quiz_id=?";
     connection.query(query, [req.params.id], (err, result) => {
       if (err) {
         res.status(400).send(err.message);
@@ -80,7 +79,7 @@ router.post("/", (req, res) => {
     const query =
       "INSERT INTO " +
       databaseName +
-      " (description ,option1 ,option2 , option3 , option4 , answer,author,quiz_id) VALUES(?,?,?,?,?,?,?,?)";
+      " (description ,option1 ,option2 , option3 , option4 , answer, author, quiz_id) VALUES(?,?,?,?,?,?,?,?)";
     if (
       req.body.description &&
       req.body.option1 &&
@@ -120,7 +119,10 @@ router.post("/", (req, res) => {
   }
 });
 
+
+
 router.post("/calculateAnswer", (req, res) => {
+  // console.log(req.body.question[0]);
   try {
     if (req.body) {
       const query = "SELECT * FROM QUESTIONS";
@@ -130,6 +132,8 @@ router.post("/calculateAnswer", (req, res) => {
           return;
         }
         const questions = [];
+
+        // console.log("query : ", result);
         for (let i = 0; i < result.length; i++) {
           questions.push({
             q_id: result[i].q_id,
@@ -139,13 +143,30 @@ router.post("/calculateAnswer", (req, res) => {
         questions.sort((a, b) => a.q_id - b.q_id);
         let correctAnswers = 0;
         const receivedQuestion = req.body.question;
-        receivedQuestion.forEach((que) => {
-          const index = binarySearch(questions, que.q_id)
-          if (index != -1) {
-            if (questions[index].answer == que.answer)
-              correctAnswers++;
+        console.log("receivedQuestion : ", receivedQuestion);
+        console.log("questions : ", questions);
+
+        let correctCount = 0;
+
+        // Iterate over each question in receivedQuestion
+        receivedQuestion.forEach((receivedQ) => {
+          // Find the corresponding question in questions array based on q_id
+          const question = questions.find((q) => q.q_id === receivedQ.q_id);
+
+          // If corresponding question is found and its answer matches the received answer
+          if (question && question.answer === receivedQ.answer) {
+            correctAnswers++;
           }
         });
+
+        // return correctCount;
+
+        // receivedQuestion.forEach((que) => {
+        //   const index = binarySearch(questions, que.q_id);
+        //   if (index != -1) {
+        //     if (questions[index].answer == que.answer) correctAnswers++;
+        //   }
+        // });
         res.status(200).send({ correct: correctAnswers });
       });
     }
